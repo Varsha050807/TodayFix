@@ -1,21 +1,18 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function DELETE(
-    req: Request,
-    context: { params: Promise<{ id: string }> }
-) {
-    const { id } = await context.params;
-
+export async function DELETE(req: Request, context: any) {
     try {
+        const id = context.params.id;
+
         await prisma.business.delete({
             where: { id },
         });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch (e) {
         return NextResponse.json(
-            { success: false, error: "Delete failed" },
+            { success: false },
             { status: 500 }
         );
     }
