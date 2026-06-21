@@ -1,11 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: Request, { params }: any) {
+export async function PATCH(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const { id } = await params;
     console.log("🔥 VERIFY ROUTE HIT");
-    console.log("PARAMS:", params);
+    console.log("PARAMS:", id);
 
     return NextResponse.json({
         debug: "route is working",
-        id: params?.id,
+        id: id,
     });
 }

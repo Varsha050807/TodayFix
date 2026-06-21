@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 // GET categories
@@ -8,7 +8,7 @@ export async function GET() {
 }
 
 // CREATE category
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     const { name, slug } = await req.json();
 
     const category = await prisma.category.create({

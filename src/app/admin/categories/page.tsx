@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function CategoriesPage() {
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
 

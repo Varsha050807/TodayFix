@@ -1,4 +1,5 @@
-import { prisma } from "../src/lib/prisma"; import bcrypt from "bcryptjs";
+import { prisma } from "../src/lib/prisma";
+import bcrypt from "bcryptjs";
 
 async function main() {
     const hashedPassword = await bcrypt.hash("123456", 10);
@@ -8,7 +9,7 @@ async function main() {
             name: "Admin User",
             email: "admin@test.com",
             password: hashedPassword,
-            role: "admin",
+            role: "ADMIN",
         },
     });
 

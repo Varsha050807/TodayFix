@@ -1,23 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(
-    req: Request,
-    context: { params: { id: string } }
+async function POST_impl(
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
-    const { id } = context.params;
+  const { id } = params;
 
-    try {
-        const business = await prisma.business.update({
-            where: { id },
-            data: { verified: true },
-        });
+  try {
+    const business = await prisma.business.update({
+      where: { id },
+      data: { verified: true },
+    });
 
-        return NextResponse.json({ success: true, business });
-    } catch (error) {
-        return NextResponse.json(
-            { success: false, error: "Verification failed" },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json({ success: true, business });
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: "Verification failed" },
+      { status: 500 }
+    );
+  }
 }
+
+export const POST = POST_impl as unknown as (
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) => Promise<Response>;
