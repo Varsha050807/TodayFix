@@ -6,8 +6,10 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
+        const { id } = params;
+
         await prisma.business.delete({
-            where: { id: params.id },
+            where: { id },
         });
 
         return NextResponse.json({ success: true });
