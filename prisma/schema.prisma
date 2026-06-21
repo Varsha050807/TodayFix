@@ -7,14 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
   
 }
-
 model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
   password  String
-  role      String   @default("user")
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Business {
@@ -73,5 +77,11 @@ model ContactMessage {
   email     String
   subject   String?
   message   String
+  createdAt DateTime @default(now())
+}
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
   createdAt DateTime @default(now())
 }

@@ -1,49 +1,17 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { businesses } from "@/data/mockData";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-    try {
-        await prisma.business.deleteMany();
+    const businesses = await prisma.business.findMany();
 
-        for (const business of businesses) {
-            await prisma.business.create({
-                data: {
-                    name: business.name,
-                    slug: business.slug,
-                    category: business.category,
-                    categorySlug: business.categorySlug,
-                    description: business.description,
-                    aboutText: business.aboutText,
-                    address: business.address,
-                    area: business.area,
-                    city: business.city,
-                    citySlug: business.citySlug,
-                    state: business.state,
-                    phone: business.phone,
-                    whatsapp: business.whatsapp,
-                    email: business.email,
-                    website: business.website,
-                    rating: business.rating,
-                    reviewsCount: business.reviewsCount,
-                    isVerified: business.isVerified,
-                    isAssured: business.isAssured,
-                    experience: business.experience,
-                    workingHours: business.workingHours,
-                },
-            });
-        }
+    const safeBusinesses = businesses.map((b) => ({
+        ...b,
+        verified: b.verified, // make it explicit (safe mapping)
+    }));
 
-        return NextResponse.json({
-            success: true,
-            count: businesses.length,
-        });
-    } catch (error) {
-        console.error(error);
-
-        return NextResponse.json({
-            success: false,
-            error: String(error),
-        });
-    }
+    return NextResponse.json({
+        success: true,
+        count: safeBusinesses.length,
+        businesses: safeBusinesses,
+    });
 }
